@@ -4,6 +4,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +23,7 @@ public class UserDto {
 	@Size(min = 3,message="username must be minimum of four character")
 	private String name;
 	
+	@UniqueElements
 	@Email(message="invalid email address")
 	private String email;
 	
@@ -30,6 +33,6 @@ public class UserDto {
 	@NotEmpty
 	private String about;
 	
-//	private String role;
+
 
 }

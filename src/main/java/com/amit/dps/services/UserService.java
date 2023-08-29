@@ -11,6 +11,7 @@ public interface UserService {
 	void deleteUser(Integer id);
 	UserDto getUserById(Integer id);
 	List<UserDto> getAllUser();
+	UserDto registerUser(UserDto userDto);
 	
 
 }

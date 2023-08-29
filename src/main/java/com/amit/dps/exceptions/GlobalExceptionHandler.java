@@ -1,6 +1,7 @@
 package com.amit.dps.exceptions;
 
 
+import org.springframework.security.access.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,8 +53,15 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(ApiException.class)
 	public ResponseEntity<ApiResponse> handleApiException(ApiException ex){
 		String message=ex.getMessage();
-		ApiResponse apiResponse=new ApiResponse(message,true);
+		ApiResponse apiResponse=new ApiResponse(message,false);
 		return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<ApiResponse>handleAccessDenied(AccessDeniedException error){
+		String message=error.getMessage();
+		ApiResponse apiResponse=new ApiResponse(message,false);
+		return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.FORBIDDEN);
 	}
 	
 

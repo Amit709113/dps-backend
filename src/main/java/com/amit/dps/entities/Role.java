@@ -1,23 +1,17 @@
 package com.amit.dps.entities;
 
-import javax.annotation.Generated;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Data
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 public class Role {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) 
+	@Id 
 	private int id;
 	
 	private String name;

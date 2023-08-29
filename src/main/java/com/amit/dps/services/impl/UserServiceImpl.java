@@ -5,11 +5,15 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.amit.dps.config.AppConstants;
+import com.amit.dps.entities.Role;
 import com.amit.dps.entities.User;
 import com.amit.dps.exceptions.ResourceNotFoundException;
 import com.amit.dps.payloads.UserDto;
+import com.amit.dps.repositories.RoleRepo;
 import com.amit.dps.repositories.UserRepo;
 import com.amit.dps.services.UserService;
 
@@ -20,7 +24,13 @@ public class UserServiceImpl implements UserService {
 	private UserRepo userRepo;
 	
 	@Autowired
-	private ModelMapper modelMapper;
+	private ModelMapper modelMapper; 
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder; 
+	
+	@Autowired
+	private RoleRepo roleRepo;
 
 	@Override 
 	public UserDto createUser(UserDto userDto) {
@@ -60,6 +70,21 @@ public class UserServiceImpl implements UserService {
 		List<User> users =this.userRepo.findAll();
 		List<UserDto> userDtos=users.stream().map(user->this.modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
 		return userDtos;
+	}
+
+	@Override
+	public UserDto registerUser(UserDto userDto) {
+		User user = this.modelMapper.map(userDto, User.class);
+		//encoded the password
+		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+		
+		//roles
+		Role role = this.roleRepo.findById(AppConstants.NORMAL_USER).get();
+		
+		user.getRoles().add(role);
+		User save = this.userRepo.save(user);
+		
+		return this.modelMapper.map(save, UserDto.class);
 	}
 
 }

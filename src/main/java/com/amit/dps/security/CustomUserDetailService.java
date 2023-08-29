@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.amit.dps.entities.User;
 import com.amit.dps.exceptions.ResourceNotFoundException;
 import com.amit.dps.repositories.UserRepo;
 
+@Service
 public class CustomUserDetailService implements UserDetailsService {
 
 	@Autowired
@@ -20,7 +22,7 @@ public class CustomUserDetailService implements UserDetailsService {
 		   
 		User user = this.userRepo.findByEmail(username).orElseThrow(()->new ResourceNotFoundException("user", "email", 0));
 		
-		return null;
+		return user;
 	}
 
 }
