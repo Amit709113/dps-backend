@@ -19,6 +19,6 @@ public class NoticeDto {
 	
 	private String noticeLink;
 	
-	private String author;
+	private String noticeAuthor;
 	
 }

@@ -21,7 +21,7 @@ import com.amit.dps.services.NoticeService;
 
 @RestController
 @RequestMapping("api/notices/")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins="*")  //we have to check points remove comment for smooth run with frontend
 public class NoticeController {
 	
 	@Autowired

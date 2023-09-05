@@ -41,8 +41,8 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		Notice notice = this.noticeRepo.findById(noticeId).orElseThrow(()->new ResourceNotFoundException("notice", "noticeId", noticeId));
 		
-		if(noticeDto.getAuthor()!=null) {
-			notice.setAuthor(noticeDto.getAuthor());
+		if(noticeDto.getNoticeAuthor()!=null) {
+			notice.setNoticeAuthor(noticeDto.getNoticeAuthor());
 			
 		}
         if(noticeDto.getNoticeDate()!=null) {

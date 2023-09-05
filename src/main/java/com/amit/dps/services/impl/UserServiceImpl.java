@@ -1,6 +1,8 @@
 package com.amit.dps.services.impl;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -46,14 +48,18 @@ public class UserServiceImpl implements UserService {
 		user.setName(userDto.getName());
 		user.setEmail(userDto.getEmail());
 		user.setAbout(userDto.getAbout());
-		user.setPassword(userDto.getPassword());
+		user.setPassword(userDto.getPassword());  // to be done later
 		userRepo.save(user);
 		return this.modelMapper.map(user, UserDto.class);
 	}
 
 	@Override
 	public void deleteUser(Integer id) {
-		User user=this.userRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("user", "id", id));
+		if(id==101) return;
+ 		User user=this.userRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("user", "id", id));
+ 		user.setRoles(null);
+ 		userRepo.save(user);
+ 		//wait here
 		userRepo.delete(user);
 	}
 
@@ -61,6 +67,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto getUserById(Integer id) {
 		User user=this.userRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("user", "id", id));
 		UserDto userDto=this.modelMapper.map(user, UserDto.class);
+		System.out.println(userDto.getPassword());
 		
 		return userDto;
 	}

@@ -56,7 +56,7 @@ public class UserController {
 		return new ResponseEntity<>(list,HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasRole('NORMAL')")  //role permission 
 	@DeleteMapping("/{userId}")
 	public  ResponseEntity<ApiResponse> deleteUser(@PathVariable("userId") Integer userId) {
 		

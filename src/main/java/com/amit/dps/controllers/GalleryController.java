@@ -26,7 +26,7 @@ public class GalleryController {
 	private GalleryService galleryService;
 	
 	
-	@PostMapping("/category/{categoryId}")
+	@PostMapping("category/{categoryId}")
 	
 	ResponseEntity<GalleryDto> createGallery(@RequestBody GalleryDto galleryDto,@PathVariable Integer categoryId){
 		GalleryDto createdGallery = this.galleryService.createGallery(galleryDto,categoryId);

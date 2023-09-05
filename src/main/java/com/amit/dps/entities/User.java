@@ -42,8 +42,11 @@ public class User  implements UserDetails{
 	@Column(name="user_name",nullable=false,length=100)
 	private String name;
 	
+	private Long personNumber;
+
 	@Email
 	private String email; 
+	
 	private String about;
 	private String password;
 //	private String role;

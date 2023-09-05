@@ -31,7 +31,7 @@ public class Notice {
 	
 	private String noticeDesc;
 	
-	private String author;
+	private String noticeAuthor;
 	
 	private String noticeLink;
 	

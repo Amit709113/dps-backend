@@ -1,6 +1,7 @@
 package com.amit.dps.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,11 +10,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;//
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.amit.dps.security.CustomUserDetailService;
 import com.amit.dps.security.JwtAuthenticationEntryPoint;
@@ -40,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.authorizeHttpRequests()
 		.antMatchers("/api/v1/auth/**").permitAll()
 		.antMatchers(HttpMethod.GET).permitAll()
+		.antMatchers("/api/**").permitAll()//own added line
 		.anyRequest()
 		.authenticated()
 		.and()
@@ -68,8 +73,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		// TODO Auto-generated method stub
 		return super.authenticationManagerBean();
 	}
+
+    @Bean
+    FilterRegistrationBean<CorsFilter> corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.addAllowedOriginPattern("*");
+        corsConfiguration.addAllowedHeader("Authorization");
+        corsConfiguration.addAllowedHeader("Content-Type");
+        corsConfiguration.addAllowedHeader("Accept");
+        corsConfiguration.addAllowedMethod("POST");
+        corsConfiguration.addAllowedMethod("GET");
+        corsConfiguration.addAllowedMethod("DELETE");
+        corsConfiguration.addAllowedMethod("PUT");
+        corsConfiguration.addAllowedMethod("OPTIONS");
+        corsConfiguration.setMaxAge(3600L);
+
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+        CorsFilter corsFilter = new CorsFilter(source);
+
+        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(corsFilter);
+        bean.setOrder(0); // Set the order for the filter
+        return bean;
+    }
 	
-	
+
+
 	
 
 }

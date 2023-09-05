@@ -5,6 +5,8 @@ import org.springframework.security.access.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.UnexpectedTypeException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -62,6 +64,12 @@ public class GlobalExceptionHandler {
 		String message=error.getMessage();
 		ApiResponse apiResponse=new ApiResponse(message,false);
 		return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.FORBIDDEN);
+	}
+	@ExceptionHandler(UnexpectedTypeException.class)
+	public ResponseEntity<ApiResponse>handleUnexpectedTypeException(UnexpectedTypeException error){
+		String message=error.getMessage();
+		ApiResponse apiResponse=new ApiResponse(message,false);
+		return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 
