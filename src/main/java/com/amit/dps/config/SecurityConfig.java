@@ -40,12 +40,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		System.out.println("configure protect method is running ");
 		http.
 		csrf().disable()
 		.authorizeHttpRequests()
 		.antMatchers("/api/v1/auth/**").permitAll()
 		.antMatchers(HttpMethod.GET).permitAll()
-		.antMatchers("/api/**").permitAll()//own added line
+//		.antMatchers("/api/**").permitAll()//own added line
 		.anyRequest()
 		.authenticated()
 		.and()
@@ -71,7 +72,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
-		// TODO Auto-generated method stub
 		return super.authenticationManagerBean();
 	}
 
@@ -99,10 +99,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         bean.setOrder(0); // Set the order for the filter
         return bean;
     }
-	
-
-
-	
-
 }
- 

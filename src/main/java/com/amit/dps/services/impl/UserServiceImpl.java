@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService {
 		user.setName(userDto.getName());
 		user.setEmail(userDto.getEmail());
 		user.setAbout(userDto.getAbout());
-		user.setPassword(userDto.getPassword());  // to be done later
+		user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
+		
 		userRepo.save(user);
 		return this.modelMapper.map(user, UserDto.class);
 	}
