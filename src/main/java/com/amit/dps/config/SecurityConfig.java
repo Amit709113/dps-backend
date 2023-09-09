@@ -26,7 +26,7 @@ import com.amit.dps.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = false)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
