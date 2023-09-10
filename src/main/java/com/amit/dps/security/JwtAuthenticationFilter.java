@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //		1.get Token
 		String requestToken=request.getHeader("Authorization");
 //		Bearer 2352523sdgsd
-		System.out.println(requestToken); //for our own perpose
+//		System.out.println(requestToken); //for our own perpose
 		
 		
 		
@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			token=requestToken.substring(7);
 			try {
 				username=this.jwtTokenHelper.getUsernameFromToken(token);
-				System.out.println("username : "+username);
+//				System.out.println("username : "+username);
 			}catch(IllegalArgumentException e) {
 				System.out.println("Unable to get jwt token");
 				//send to client here 
@@ -58,9 +58,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			
 		
 		}
-		else {
-			System.out.println("jwt token does not start with Bearer");
-		}
+//		else {
+//			System.out.println("jwt token does not start with Bearer");
+//		}
 		//once we get the token 
 		//now validate
 		if(username!=null && SecurityContextHolder .getContext().getAuthentication()==null) {
