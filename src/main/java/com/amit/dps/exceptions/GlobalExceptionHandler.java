@@ -5,7 +5,7 @@ import org.springframework.security.access.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.UnexpectedTypeException;
+import jakarta.validation.UnexpectedTypeException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

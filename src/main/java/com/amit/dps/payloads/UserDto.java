@@ -3,11 +3,9 @@ package com.amit.dps.payloads;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.UniqueElements;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import com.amit.dps.entities.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
