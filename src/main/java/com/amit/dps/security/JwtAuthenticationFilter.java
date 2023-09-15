@@ -51,12 +51,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				System.out.println("Unable to get jwt token"  + ex.getMessage());
 				//send to client here 
 			}catch(ExpiredJwtException ex) {
-				System.out.println("Jwt token has expired" + ex.getMessage());
+				System.out.println("Jwt token has expired : " + ex.getMessage());
 			}catch(MalformedJwtException ex) {
 				System.out.println("invalid jwt " + ex.getMessage());
 			}
 			
-		
 		}
 		else {
 			System.out.println("jwt token does not start with Bearer : "+ requestToken);
@@ -66,8 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		if(username!=null && SecurityContextHolder .getContext().getAuthentication()==null) {
 			
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			
-			 
+
 			if(this.jwtTokenHelper.validateToken(token, userDetails)) {
 				
 				//shi chal raha hai

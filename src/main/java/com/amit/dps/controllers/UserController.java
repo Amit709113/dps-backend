@@ -51,12 +51,12 @@ public class UserController {
 	
 	@GetMapping("/")
 	public ResponseEntity<List<UserDto> > getAllUser(){
+
 		List<UserDto> list=this.userService.getAllUser();
-		
 		return new ResponseEntity<>(list,HttpStatus.OK);
 	}
 	
-	//@PreAuthorize("hasRole('NORMAL')")  //role permission 
+	@PreAuthorize("hasRole('ADMIN')")  //role permission 
 	@DeleteMapping("/{userId}")
 	public  ResponseEntity<ApiResponse> deleteUser(@PathVariable("userId") Integer userId) {
 		

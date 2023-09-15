@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -39,16 +40,16 @@ public class SecurityConfig {
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 	
-	protected void configure(HttpSecurity http) throws Exception {
-		System.out.println("configure protect method is running ");
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+
 		http.csrf(AbstractHttpConfigurer::disable)
-		//cors
 //		.cors(co->co.disable())
 		.authorizeHttpRequests(request-> 
 			request
 			.requestMatchers("/api/v1/auth/**").permitAll()
 			.requestMatchers(HttpMethod.GET).permitAll()
-			.requestMatchers("/api/**").permitAll()//own added line
+			//.requestMatchers("/api/**").permitAll()//own added line
 			.anyRequest()
 			.authenticated()
 			)
@@ -56,6 +57,7 @@ public class SecurityConfig {
 		.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		
 		http.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		return http.build();
 		//type of the request 
 		//this is basic authentication
 	}
@@ -75,6 +77,7 @@ public class SecurityConfig {
 
     @Bean
     FilterRegistrationBean corsFilter() {
+    	
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);

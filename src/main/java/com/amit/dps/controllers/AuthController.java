@@ -11,7 +11,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,13 +49,14 @@ public class AuthController {
 			@Valid
 			@RequestBody JwtAuthRequest request
 			) throws Exception{
-		
-		this.authenticate(request.getUsername(),request.getPassword());
+		this.authenticate(request.getUsername(),request.getPassword());  
 		UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
-		String token = this.jwtTokenHelper.generateToken(userDetails);
+		System.out.println(" userDetails :  " + userDetails.getUsername());
+		String token = this.jwtTokenHelper.generateToken(userDetails); //causing the problem
+		System.out.println("token : "+token);
 		JwtAuthResponse response=new JwtAuthResponse();
 		response.setToken(token);
-		response.setUserDto(this.modelMapper.map((User)userDetails, UserDto.class));
+		response.setUserDto(this.modelMapper.map((User)userDetails, UserDto.class)); //this line is under servileness
 		return new ResponseEntity<JwtAuthResponse>(response,HttpStatus.OK);
 	 
 	}
@@ -70,17 +70,20 @@ public class AuthController {
 		
 	}
 	private void authenticate(String username, String password) throws Exception {
+		
 		UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(username, password);
+		
 		
 		try {
 			this.authenticationManager.authenticate(authenticationToken);
+			
 			
 		}catch(BadCredentialsException e) {
 			System.out.println("invalid details");
 			throw new ApiException("invalid credentials");
 			 
 		}
-		//we will handle exception globally
+		//we will have to handle exception globally
 	}
 
 }
