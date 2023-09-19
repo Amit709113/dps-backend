@@ -8,13 +8,15 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.amit.dps.config.AppConstants;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenHelper {
-public static final long JWT_TOKEN_VALIDITY=5*60*60;
+
 	
 	private String secret="jwtTokenKey";
 	
@@ -48,7 +50,9 @@ public static final long JWT_TOKEN_VALIDITY=5*60*60;
 	//generate token for user
 	public String generateToken(UserDetails userDetails) {
 		Map<String,Object> claims=new HashMap<>();
-		return doGenerateToken(claims,userDetails.getUsername());
+		
+		String str=doGenerateToken(claims,userDetails.getUsername());
+		return str;
 	}	
 	//while creating the token
 //		1.define claims of the token, Like issuer,Expiration, Subject and the Id
@@ -58,7 +62,7 @@ public static final long JWT_TOKEN_VALIDITY=5*60*60;
 		
 	private String doGenerateToken(Map<String,Object> claims,String subject) {
 		return Jwts.builder().setClaims(claims).setSubject(subject)
-		.setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY *100 ))
+		.setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + AppConstants.JWT_TOKEN_VALIDITY *100 ))
 		.signWith(SignatureAlgorithm.HS512, secret).compact();
 				    			    
 	}

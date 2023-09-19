@@ -13,5 +13,4 @@ public interface UserService {
 	List<UserDto> getAllUser();
 	UserDto registerUser(UserDto userDto);
 	
-
 }

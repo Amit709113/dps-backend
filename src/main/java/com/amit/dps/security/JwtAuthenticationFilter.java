@@ -2,10 +2,10 @@ package com.amit.dps.security;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,28 +46,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			token=requestToken.substring(7);
 			try {
 				username=this.jwtTokenHelper.getUsernameFromToken(token);
-//				System.out.println("username : "+username);
-			}catch(IllegalArgumentException e) {
-				System.out.println("Unable to get jwt token");
+				System.out.println("username : "+username);
+			}catch(IllegalArgumentException ex) {
+				System.out.println("Unable to get jwt token"  + ex.getMessage());
 				//send to client here 
 			}catch(ExpiredJwtException ex) {
-				System.out.println("Jwt token has expired");
+				System.out.println("Jwt token has expired : " + ex.getMessage());
 			}catch(MalformedJwtException ex) {
-				System.out.println("invalid jwt ");
+				System.out.println("invalid jwt " + ex.getMessage());
 			}
 			
-		
 		}
-//		else {
-//			System.out.println("jwt token does not start with Bearer");
-//		}
+		else {
+			System.out.println("jwt token does not start with Bearer : "+ requestToken);
+		}
 		//once we get the token 
 		//now validate
 		if(username!=null && SecurityContextHolder .getContext().getAuthentication()==null) {
 			
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			
-			 
+
 			if(this.jwtTokenHelper.validateToken(token, userDetails)) {
 				
 				//shi chal raha hai
@@ -81,7 +79,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				
 			}
 			else {
-				System.out.println("invalid jwt token");
+				System.out.println("invalid jwt token validation failed ");
 			}
 			
 		}
