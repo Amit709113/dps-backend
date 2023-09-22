@@ -16,6 +16,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.amit.dps.exceptions.ResourceNotFoundException;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 
@@ -29,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+			throws ServletException, IOException,ExpiredJwtException,MalformedJwtException,ResourceNotFoundException {
 //		1.get Token
 		String requestToken=request.getHeader("Authorization");
 //		Bearer 2352523sdgsd
@@ -49,11 +51,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				System.out.println("username : "+username);
 			}catch(IllegalArgumentException ex) {
 				System.out.println("Unable to get jwt token"  + ex.getMessage());
-				//send to client here 
+				//send to client here
 			}catch(ExpiredJwtException ex) {
+				
 				System.out.println("Jwt token has expired : " + ex.getMessage());
-			}catch(MalformedJwtException ex) {
+				
+			}
+			catch(MalformedJwtException ex) {
 				System.out.println("invalid jwt " + ex.getMessage());
+
+				
 			}
 			
 		}

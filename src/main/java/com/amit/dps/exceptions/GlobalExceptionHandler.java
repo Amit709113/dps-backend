@@ -12,10 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-//import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.amit.dps.payloads.ApiResponse;//
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,22 +26,11 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException ex){
 		String message=ex.getMessage();
-//		String fieldName=ex.getFieldName();
-//		double fieldValue=ex.getFieldValue();
 		ApiResponse apiResponse=new ApiResponse(message,false);
 		
 		return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.NOT_FOUND);
 	}
-	
-	
-	
-	
-//	entityNotFoundException is caught
-//	@ExceptionHandler(EntityNotFoundException.class)
-//	public ResponseEntity<ApiResponse> entityNotFoundExceptionHandler(){
-//		ApiResponse apiResponse=new ApiResponse("user not found", false);
-//		return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.NOT_FOUND);
-//	}
+
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String,String>> handleMethodArgsNotFoundException(MethodArgumentNotValidException ex){
@@ -72,6 +63,19 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@ExceptionHandler(ExpiredJwtException.class)
+	public ResponseEntity<ApiResponse>hadleExpiredJwtException(ExpiredJwtException ex){
+		String message=ex.getMessage();
+		ApiResponse apiResponse= new ApiResponse(message,false);
+		return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.UNAUTHORIZED);
+	}
+	
+	@ExceptionHandler(MalformedJwtException.class)
+	public ResponseEntity<ApiResponse>hadleMalformedJwtException(MalformedJwtException ex){
+		String message=ex.getMessage();
+		ApiResponse apiResponse= new ApiResponse(message,false);
+		return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.UNAUTHORIZED);
+	}
 
 }
 
